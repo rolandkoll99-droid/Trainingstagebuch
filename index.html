@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Trainingsbuch">
+<title>Stock Trainingsbuch V12</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: eine Spalte, Handy zuerst. Kopf mit Training, Spiel-/Kehren-Leiste, eine Kehre pro Ansicht, feste Navigation unten. */
+:root{
+  --bg:#EEF2F4; --surface:#FFFFFF; --sunk:#E3E9ED; --line:#CDD6DC;
+  --ink:#14202A; --muted:#5A6B78; --accent:#0E5A78; --accent-ink:#FFFFFF; --accent-soft:#D6E7EF;
+  --hit:#2D7A4C; --hit-soft:#DCEFE3; --miss:#B04A2E; --miss-soft:#F5E1DA; --warn:#9A6B12;
+  --roland:#1E5FB4; --roland-soft:#DCE8F7; --sabine:#B8306B; --sabine-soft:#F6DDE8;
+  --p3:#1F7A6B; --p3-soft:#D5EEE9; --p4:#8A6510; --p4-soft:#F3E7C6; --p5:#5F7A1A; --p5-soft:#E4EDCB; --p6:#4A5B6B; --p6-soft:#DFE5EA;
+  --stock:#C25E14; --stock-soft:#F8E4D2; --mass:#6747BC; --mass-soft:#E7E0F7;
+  --f-display:"Saira Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:12px; --tap:46px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E151B; --surface:#16212A; --sunk:#1D2A34; --line:#2C3B47;
+  --ink:#E6EDF2; --muted:#93A4B1; --accent:#5DB3D6; --accent-ink:#06202B; --accent-soft:#18394A;
+  --hit:#5FC28A; --hit-soft:#173A28; --miss:#E58467; --miss-soft:#40231B; --warn:#E0B357; --roland:#6EA6EE; --roland-soft:#1A2F4C; --sabine:#EE7FAE; --sabine-soft:#4A1C30; --p3:#5CC7B4; --p3-soft:#123C35; --p4:#E0B357; --p4-soft:#3D2F0C; --p5:#A9CC5A; --p5-soft:#2B3A0E; --p6:#A9B8C6; --p6-soft:#2A3743; --stock:#F09A55; --stock-soft:#45290F; --mass:#A893F0; --mass-soft:#2D2550; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E151B; --surface:#16212A; --sunk:#1D2A34; --line:#2C3B47;
+  --ink:#E6EDF2; --muted:#93A4B1; --accent:#5DB3D6; --accent-ink:#06202B; --accent-soft:#18394A;
+  --hit:#5FC28A; --hit-soft:#173A28; --miss:#E58467; --miss-soft:#40231B; --warn:#E0B357; --roland:#6EA6EE; --roland-soft:#1A2F4C; --sabine:#EE7FAE; --sabine-soft:#4A1C30; --p3:#5CC7B4; --p3-soft:#123C35; --p4:#E0B357; --p4-soft:#3D2F0C; --p5:#A9CC5A; --p5-soft:#2B3A0E; --p6:#A9B8C6; --p6-soft:#2A3743; --stock:#F09A55; --stock-soft:#45290F; --mass:#A893F0; --mass-soft:#2D2550; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--ink);font:15px/1.45 var(--f-body);-webkit-tap-highlight-color:transparent}
+.wrap{max-width:560px;margin:0 auto;padding-inline:16px;padding-block:12px calc(96px + env(safe-area-inset-bottom,0px));display:grid;gap:14px}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:30px;line-height:1.05}
+h2{font-size:22px}
+h3{font-size:18px}
+.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:12px;min-width:0}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+label.f{display:grid;gap:4px;font-size:12px;color:var(--muted);font-weight:500;min-width:0}
+input.in{width:100%;min-height:var(--tap);border:1px solid var(--line);border-radius:10px;background:var(--sunk);color:var(--ink);font:500 17px var(--f-body);padding:0 12px;font-variant-numeric:tabular-nums;-webkit-appearance:none;appearance:none}
+input.in:focus{outline:2px solid var(--accent);outline-offset:1px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{min-height:var(--tap);border-radius:10px;border:1px solid var(--line);background:var(--surface);padding:0 14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--miss);border-color:var(--miss)}
+.btn.small{min-height:36px;font-size:14px;padding:0 10px}
+.btn:disabled{opacity:.4;cursor:default}
+.seg{display:flex;flex-wrap:wrap;background:var(--sunk);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1 1 auto;min-width:64px;min-height:40px;border:0;border-radius:8px;background:transparent;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.chip{min-height:var(--tap);border-radius:10px;border:1px solid var(--line);background:var(--sunk);padding:6px 10px;font-size:14px;font-weight:500;text-align:left;line-height:1.2;display:flex;align-items:center;gap:8px}
+.chip .code{font:500 12px var(--f-mono);color:var(--muted);min-width:22px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] .code{color:inherit;opacity:.8}
+.chip.good[aria-pressed="true"]{background:var(--hit);border-color:var(--hit);color:#fff}
+.chip.bad[aria-pressed="true"]{background:var(--miss);border-color:var(--miss);color:#fff}
+.chip.center{justify-content:center;text-align:center}
+/* Spiel- und Kehrenleiste */
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tab{min-height:52px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;padding:4px;line-height:1.1}
+.tab b{font:600 18px var(--f-display)}
+.tab small{font-size:11px;color:var(--muted)}
+.tab[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.kehren{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.kehre{min-height:42px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font:600 16px var(--f-display);position:relative}
+.kehre.done{background:var(--sunk)}
+.kehre.done::after{content:"";position:absolute;right:6px;top:6px;width:6px;height:6px;border-radius:50%;background:var(--hit)}
+.kehre[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+/* Taube-Feld */
+.feld{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:stretch}
+.taube{display:grid;place-items:center;border-radius:10px;border:1px dashed var(--line);font:600 13px var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-height:var(--tap)}
+.taube i{display:block;width:16px;height:16px;border-radius:50%;background:var(--ink);margin:0 auto 2px}
+.rings{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.massres{border-radius:10px;padding:10px 12px;background:var(--sunk);font-weight:600;text-align:center}
+.massres.good{background:var(--hit-soft);color:var(--hit)}.massres.bad{background:var(--miss-soft);color:var(--miss)}
+.chip:disabled{opacity:.35;cursor:default}
+.kehre .kn-l,.kehre .ks{display:none}
+.sum{order:2}
+/* Tablet quer: Seitenleiste links, Eingabe mittig */
+@media (min-width:900px) and (orientation:landscape), (min-width:1100px){
+  :root{--tap:44px}
+  body{font-size:15px}
+  .wrap{max-width:1280px;padding-block:12px 84px}
+  .wrap.editmode{grid-template-columns:368px minmax(0,1fr);grid-template-areas:"side main" "side sum";grid-template-rows:auto 1fr;gap:12px 20px;align-items:start;padding-block:12px 12px;min-height:100dvh}
+  .editmode .side{grid-area:side;display:grid;gap:10px;align-content:start}
+  .editmode .main{grid-area:main;display:grid;gap:12px;max-width:780px;width:100%;justify-self:center;align-content:start}
+  .editmode .sum{grid-area:sum;align-self:start;max-width:780px;width:100%;justify-self:center;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px}
+  .editmode .side{padding-bottom:72px}
+  .editmode .side .grid3{grid-template-columns:1.25fr 1fr .75fr;gap:6px}
+  .editmode .tab b{font-size:16px;white-space:nowrap}
+  .editmode .main label.f.inl{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;font-size:14px}
+  .editmode .main .grid2:has(> label.f.inl){grid-template-columns:1fr 1fr;align-items:center}
+  .editmode .massres{display:none}
+  .editmode .main .card[aria-label="Kehre"]{grid-template-columns:auto minmax(0,1fr)}
+  .editmode .stgwrap{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:nowrap;min-width:0}
+  .editmode .stgwrap .picks{flex-wrap:nowrap;overflow-x:auto;min-width:0}
+  .editmode .main .card[aria-label="Kehre"] .stg{grid-template-columns:auto 120px}
+  .editmode .artlbl{display:none}
+  .editmode .main .card[aria-label="Kehre"]{padding-block:10px}
+  .editmode .main .card[aria-label="Kehre"] > .row .btn{min-height:32px}
+  .nav button{font-size:11px}
+  .editmode .stgwrap .stg{order:2}
+  .editmode .platrow{grid-template-columns:minmax(220px,300px) minmax(0,1fr);align-items:center;gap:12px}
+  .editmode .pick{min-height:40px}
+  .editmode .dirbox{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;font-size:14px!important}
+  .editmode .feld .chip,.editmode .taube,.editmode .rings .chip,.editmode [data-val="NK"][data-set="massLage"]{min-height:46px}
+  .editmode h1{font-size:26px}
+  .editmode .side .card{padding:10px;gap:8px}
+  .editmode .side .in{min-height:40px;font-size:15px;padding:0 8px}
+  .editmode .tab{min-height:46px}
+  .editmode .kehren{grid-template-columns:1fr;gap:5px}
+  .editmode .kehre{min-height:40px;border-radius:10px;display:flex;align-items:center;gap:10px;padding:0 12px 0 12px;text-align:left;font-size:16px}
+  .editmode .kehre .kn-s{display:none}
+  .editmode .kehre .kn-l{display:inline;min-width:64px}
+  .editmode .kehre .ks{display:inline;font:500 13px var(--f-body);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .editmode .kehre[aria-pressed="true"] .ks{color:inherit;opacity:.85}
+  .editmode .kehre.done::after{top:50%;margin-top:-3px;right:10px}
+  .editmode .main .card{padding:14px 18px}
+  .editmode .main .card[aria-label="Kehre"]{grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:18px}
+  .editmode .main .card[aria-label="Kehre"] .stg{display:grid;grid-template-columns:auto 160px;align-items:center;gap:10px;font-size:14px;justify-self:end}
+  .editmode .main .card[aria-label="Kehre"] > .note,.editmode .main .card[aria-label="Kehre"] > .row{grid-column:1 / -1}
+  .editmode .chipsgrid{grid-template-columns:repeat(3,1fr)}
+  .editmode .chip{min-height:50px}
+  .editmode .main #nextK,.editmode .main #prevK{min-height:54px;font-size:17px}
+  .nav{left:0;right:auto;width:400px;border-right:1px solid var(--line)}
+  .nav .in{max-width:none}
+  .list{grid-template-columns:1fr 1fr}
+}
+.cfggrid{display:grid;gap:14px}
+.cfghead{display:grid;grid-template-columns:minmax(0,1fr) 84px 96px;gap:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.cfgrow{display:grid;grid-template-columns:minmax(0,1fr) 84px 96px;gap:8px;align-items:center}
+.cfglbl{display:flex;gap:8px;align-items:center;font-size:14px;min-width:0}
+.cfglbl .code{font:500 12px var(--f-mono);color:var(--muted);min-width:22px}
+.cfgin{text-align:center;min-height:42px!important;padding:0 6px!important}
+.tgl{display:flex;align-items:center;gap:6px;font-size:13px}
+.tgl input{width:22px;height:22px;accent-color:var(--hit)}
+@media (min-width:900px){.cfggrid{grid-template-columns:1fr 1fr;align-items:start}}
+.picks{display:flex;flex-wrap:wrap;gap:6px}
+.pick{min-height:38px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+.pick[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pick.add{font-weight:500;color:var(--muted);border-style:dashed}
+.stgwrap{display:grid;gap:8px}
+.stgwrap .stg{order:-1}
+.platrow{display:grid;gap:8px}
+.matlist{display:grid;gap:6px}
+.matitem{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.matitem .nm{flex:1;min-width:0;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.matitem .std{font-size:12px;font-weight:600;color:var(--hit);background:var(--hit-soft);border-radius:999px;padding:2px 8px}
+.matadd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+@media (min-width:900px){.matgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}}
+.matgrid{display:grid;gap:14px}
+.report{background:var(--hit-soft);color:var(--hit);border-radius:10px;padding:10px 12px;font-size:14px;font-weight:500}
+.report.bad{background:var(--miss-soft);color:var(--miss)}
+/* Spieler- und Artfarben */
+.pc0{--pc:var(--muted);--pcs:var(--sunk)} .pc1{--pc:var(--roland);--pcs:var(--roland-soft)} .pc2{--pc:var(--sabine);--pcs:var(--sabine-soft)} .pc3{--pc:var(--p3);--pcs:var(--p3-soft)} .pc4{--pc:var(--p4);--pcs:var(--p4-soft)} .pc5{--pc:var(--p5);--pcs:var(--p5-soft)} .pc6{--pc:var(--p6);--pcs:var(--p6-soft)}
+.a-stock{--ac:var(--stock);--acs:var(--stock-soft)} .a-mass{--ac:var(--mass);--acs:var(--mass-soft)}
+.pill.pl{background:var(--pcs);color:var(--pc)}
+.pill.ar{background:var(--acs);color:var(--ac)}
+.seg button[class*="pc"][aria-pressed="true"]{background:var(--pc);color:#fff}
+.seg button.a-stock[aria-pressed="true"],.seg button.a-mass[aria-pressed="true"]{background:var(--ac);color:#fff}
+:root[data-theme="dark"] .seg button[class*="pc"][aria-pressed="true"],:root[data-theme="dark"] .seg button[class*="a-"][aria-pressed="true"]{color:#10161C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .seg button[class*="pc"][aria-pressed="true"],:root:not([data-theme="light"]) .seg button[class*="a-"][aria-pressed="true"]{color:#10161C}}
+.tab.a-stock,.tab.a-mass{border-top:4px solid var(--ac)}
+.tab.a-stock small,.tab.a-mass small{color:var(--ac);font-weight:600}
+.tab.a-stock[aria-pressed="true"],.tab.a-mass[aria-pressed="true"]{background:var(--acs);border-color:var(--ac)}
+.card.a-stock,.card.a-mass{border-color:var(--ac)}
+.card.a-stock .sect-h h3,.card.a-mass .sect-h h3,.kpi.a-stock .eyebrow,.kpi.a-mass .eyebrow{color:var(--ac)}
+.kpi.a-stock,.kpi.a-mass{background:var(--acs)}
+.kpi.a-stock .v,.kpi.a-mass .v{color:var(--ac)}
+.who{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pc);margin-right:6px;vertical-align:middle}
+.item[class*="pc"]{border-left:5px solid var(--pc)}
+.swatch{width:38px;height:38px;border-radius:50%;border:3px solid var(--surface);outline:1px solid var(--line);background:var(--pc);flex:none}
+.splrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:8px;align-items:center}
+.splrow .in{min-height:42px}
+.splconf{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}
+.multi{font-size:12px;color:var(--muted)}
+.sect-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+/* Untere Navigation */
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom,0px));z-index:5}
+.nav .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.nav button{font-size:10.5px;letter-spacing:-.01em;padding:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav{padding-left:8px!important;padding-right:8px!important}
+.nav button{min-height:48px;border:0;border-radius:10px;background:transparent;font-weight:600;font-size:14px;color:var(--muted);display:grid;place-items:center;line-height:1.1}
+.nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+.nav button[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+/* Liste */
+.list{display:grid;gap:8px}
+.item{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;text-align:left;width:100%}
+.item .t{font:600 19px var(--f-display)}
+.pill{display:inline-flex;align-items:center;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;background:var(--sunk);color:var(--muted)}
+.pill.hit{background:var(--hit-soft);color:var(--hit)}
+.pill.acc{background:var(--accent-soft);color:var(--accent)}
+.quotes{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+/* Auswertung */
+.big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--sunk);border-radius:10px;padding:12px;display:grid;gap:2px}
+.kpi .v{font:600 40px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.kpi .s{font-size:12px;color:var(--muted)}
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:8px;align-items:center;font-size:13px}
+.bar .lbl{display:flex;justify-content:space-between;gap:6px;margin-bottom:3px}
+.bar .track{height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:4px}
+.bar .fill.good{background:var(--hit)} .bar .fill.bad{background:var(--miss)}
+.bar .pct{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+table.t{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+table.t th,table.t td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:right}
+table.t th:first-child,table.t td:first-child{text-align:left}
+table.t th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.scroll{overflow-x:auto}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:500;z-index:9;max-width:calc(100% - 32px);text-align:center}
+.save{font-size:12px;color:var(--muted)}
+.empty{text-align:center;padding:28px 14px;display:grid;gap:10px;justify-items:center}
+.note{font-size:12px;color:var(--muted)}
+.mini{display:flex;gap:12px;flex-wrap:wrap;font-size:13px}
+.mini b{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:no-preference){.chip,.tab,.kehre,.seg button{transition:background .12s,color .12s,border-color .12s}}
+
+/* V12 · Leistungsanalyse */
+.scorehero{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:center}
+.scorecircle{width:138px;height:138px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) var(--score),var(--sunk) 0);position:relative;margin:auto}
+.scorecircle::after{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--surface)}
+.scorecircle .sv{position:relative;z-index:1;text-align:center;font:600 42px/1 var(--f-display)}
+.scorecircle .sv small{display:block;font:500 12px var(--f-body);color:var(--muted);margin-top:4px}
+.analysisgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.analysisgrid .kpi .v{font-size:32px}
+.trendup{color:var(--hit)}.trenddown{color:var(--miss)}
+@media(max-width:520px){.scorehero{grid-template-columns:1fr}.analysisgrid{grid-template-columns:1fr 1fr}.scorecircle{width:126px;height:126px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<nav class="nav" aria-label="Hauptnavigation"><div class="in">
+  <button id="nav-list" data-go="list"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Trainings</button>
+  <button id="nav-edit" data-go="edit"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/></svg>Erfassen</button>
+  <button id="nav-stats" data-go="stats"><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg>Auswertung</button>
+  <button id="nav-cfg" data-go="cfg"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Wertung</button>
+  <button id="nav-mat" data-go="mat"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="15" rx="7" ry="3"/><path d="M5 15v-2c0-1.7 3.1-3 7-3s7 1.3 7 3v2M12 10V4"/></svg>Material</button>
+</div></nav>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+window.addEventListener("error",function(e){
+  if(e.target&&e.target.tagName==="SCRIPT"){
+    const t=document.getElementById("toast");if(t){t.textContent="Eine Export-Bibliothek konnte nicht geladen werden. Training und Speicherung funktionieren weiterhin.";t.hidden=false;setTimeout(()=>t.hidden=true,4500)}
+  }
+},true);
+(function(){
+"use strict";
+/* V11: robustere Normalisierung, Speicherfehler-Hinweis, pagehide-Sicherung, Exportbibliothek-Fehlerhinweis. */
+const SPL_KEY="stock_trainingsbuch_spieler_v1";
+const SPL_DEFAULT=[{name:"Roland",c:1},{name:"Sabine",c:2}];
+const NCOL=6;
+function cleanSpl(src){const out=[];if(Array.isArray(src))for(const x of src){const n=x&&typeof x.name==="string"?x.name.trim():"";if(!n||out.some(o=>o.name===n))continue;out.push({name:n,c:Math.min(NCOL,Math.max(1,parseInt(x.c)||1))})}return out.length?out:JSON.parse(JSON.stringify(SPL_DEFAULT))}
+let SPL=cleanSpl(null);
+try{const r=localStorage.getItem(SPL_KEY);if(r)SPL=cleanSpl(JSON.parse(r))}catch(e){}
+const names=()=>SPL.map(x=>x.name);
+const pcl=n=>{const x=SPL.find(o=>o.name===n);return"pc"+(x?x.c:0)};
+const PCRGB=[[90,107,120],[30,95,180],[184,48,107],[31,122,107],[138,101,16],[95,122,26],[74,91,107]];
+const SPIELE=4, KEHREN=6;
+const MAT_KEY="stock_trainingsbuch_material_v1";
+const MAT_DEFAULT={Roland:{stingel:["21/A"],std:"21/A",platten:[]},Sabine:{stingel:["21/A"],std:"21/A",platten:[]}};
+function mergeMat(src){const m={};const keys=new Set([...names(),...(src&&typeof src==="object"?Object.keys(src):[])]);keys.delete("_ts");
+  for(const p of keys){m[p]=JSON.parse(JSON.stringify((!src&&MAT_DEFAULT[p])||{stingel:[],std:"",platten:[]}));const x=src&&src[p];if(!x||typeof x!=="object")continue;
+  if(Array.isArray(x.stingel))m[p].stingel=x.stingel.map(String);if(Array.isArray(x.platten))m[p].platten=x.platten.map(String);if(typeof x.std==="string")m[p].std=x.std}return m}
+let MAT=mergeMat(null);
+try{const r=localStorage.getItem(MAT_KEY);if(r)MAT=mergeMat(JSON.parse(r))}catch(e){}
+const matOf=p=>MAT[p]||(MAT[p]={stingel:[],std:"",platten:[]});
+const stdStingel=p=>(MAT[p]&&MAT[p].std)||"";
+const RICHTUNG=[["L","Links"],["M","Mitte"],["R","Rechts"]];
+const STOCK=[
+  ["EI","Eigener Stock im Feld","good"],["EA","Eigener Stock aus dem Feld","good"],
+  ["GI","Gegner Stock im Feld","good"],["GA","Gegner Stock aus dem Feld","good"],
+  ["BF","Beide Stöcke bleiben im Feld","good"],["BA","Beide Stöcke aus dem Feld","good"],
+  ["FL","Fehlschuss links","bad"],["FR","Fehlschuss rechts","bad"],
+  ["FK","Fehlschuss zu kurz","bad"],["NK","Nicht im Kasten","bad"]];
+const CFG_DEFAULT={
+  stockPts:{EI:6,EA:4,GI:6,GA:10,BF:6,BA:10,FL:0,FR:0,FK:0,NK:0},
+  stockHit:{EI:true,EA:true,GI:true,GA:true,BF:true,BA:true,FL:false,FR:false,FK:false,NK:false},
+  ringPts:{"1":10,"2":8,"3":6,"4":4,"5":2},
+  ringHit:{"1":true,"2":true,"3":true,"4":true,"5":true},
+  nkPts:0,
+  lageAdj:{V:0,L:0,R:0,LH:0,RH:0}
+};
+const CFG_KEY="stock_trainingsbuch_wertung_v1";
+let CFG=JSON.parse(JSON.stringify(CFG_DEFAULT));
+function mergeCfg(src){const c=JSON.parse(JSON.stringify(CFG_DEFAULT));if(src&&typeof src==="object")for(const k of Object.keys(c)){if(src[k]==null)continue;if(typeof c[k]==="object")Object.assign(c[k],src[k]);else c[k]=src[k]}return c}
+try{const r=localStorage.getItem(CFG_KEY);if(r)CFG=mergeCfg(JSON.parse(r))}catch(e){}
+const num=v=>{const n=parseFloat(String(v).replace(",","."));return isFinite(n)?n:0};
+const STOCK_HIT={has:c=>!!CFG.stockHit[c]};
+const STOCK_MAX=2;
+const stockArr=k=>Array.isArray(k.stock)?k.stock:(k.stock?[k.stock]:[]);
+const stockHit=k=>stockArr(k).some(c=>STOCK_HIT.has(c));
+const stockPoints=k=>{const a=stockArr(k);return a.length?Math.max(...a.map(c=>num(CFG.stockPts[c]))):0};
+const stockMax=()=>Math.max(0,...Object.values(CFG.stockPts).map(num));
+const massPoints=k=>k.massLage==="NK"?num(CFG.nkPts):Math.max(0,num(CFG.ringPts[k.massRing])+num(CFG.lageAdj[k.massLage]));
+const massHitK=k=>k.massLage!=="NK"&&!!CFG.ringHit[k.massRing];
+const massMax=()=>Math.max(0,num(CFG.nkPts),...Object.values(CFG.ringPts).map(num).flatMap(r=>Object.values(CFG.lageAdj).map(a=>r+num(a))));
+const stockCodes=k=>stockArr(k).join("+");
+const stockLabels=k=>stockArr(k).map(c=>lab(STOCK,c)).join(" + ");
+const LAGE=[["V","vor der Taube"],["L","links neben der Taube"],["R","rechts neben der Taube"],["LH","links hinter der Taube"],["RH","rechts hinter der Taube"],["NK","Nicht im Kasten"]];
+const LAGE_SHORT={V:"vor",L:"links",R:"rechts",LH:"links hinter",RH:"rechts hinter",NK:"nicht im Kasten"};
+const RINGE=[["1","Ring 1"],["2","Ring 2"],["3","Ring 3"],["4","Ring 4"],["5","Ring 5"]];
+const ART=[["stock","Stockschuss"],["mass","Massschuss"]];
+const lab=(arr,c)=>(arr.find(x=>x[0]===c)||[,""])[1];
+const LS_KEY="stock_trainingsbuch_v1";
+const APP_VERSION="11.0";
+
+const S={matP:names()[0],confirmSpl:-1,view:"list",trainings:[],cur:null,g:0,k:0,filter:"Alle",scope:"alle",confirmDel:null,db:null,uid:null,dl:null,loaded:false,saveState:""};
+
+/* ---------- Daten ---------- */
+function pad(n){return String(n).padStart(2,"0")}
+function today(){const d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function nowTime(){const d=new Date();return pad(d.getHours())+":"+pad(d.getMinutes())}
+function emptyKehre(){return{stingel:"",stingelOwn:false,schussplatte:"",richtung:"",stock:[],massplatte:"",massLage:"",massRing:""}}
+function emptySpiel(){return{art:"stock",kehren:Array.from({length:KEHREN},emptyKehre)}}
+function newTraining(spieler){
+  return{id:"t"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),spieler:spieler||names()[0],datum:today(),zeit:nowTime(),temperatur:"",
+    spiele:Array.from({length:SPIELE},(_,g)=>{const sp=emptySpiel();if(g===0)sp.kehren.forEach(k=>k.stingel=stdStingel(spieler||names()[0]));return sp}),updatedAt:Date.now()};
+}
+const OLD_MASS={LN:"L",RN:"R",LH:"LH",RH:"RH",NK:"NK"};
+function normalize(t){
+  t=(t&&typeof t==="object")?t:{};
+  const n=newTraining(typeof t.spieler==="string"&&t.spieler.trim()?t.spieler:names()[0]);Object.assign(n,t);
+  if(!n.id||typeof n.id!=="string")n.id="t"+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  n.spieler=typeof n.spieler==="string"&&n.spieler.trim()?n.spieler.trim():names()[0];
+  n.datum=/^\d{4}-\d{2}-\d{2}$/.test(String(n.datum||""))?n.datum:today();
+  n.zeit=/^\d{2}:\d{2}$/.test(String(n.zeit||""))?n.zeit:nowTime();
+  n.spiele=Array.from({length:SPIELE},(_,g)=>{
+    const src=(t.spiele||[])[g]||{};
+    const kehren=Array.from({length:KEHREN},(_,k)=>{
+      const o=Object.assign(emptyKehre(),(src.kehren||[])[k]||{});
+      o.stock=stockArr(o);
+      if(o.mass){ /* alte Version: R1-R5 / LN / RN ... */
+        if(/^R[1-5]$/.test(o.mass)){o.massLage="V";o.massRing=o.mass.slice(1)}else if(OLD_MASS[o.mass])o.massLage=OLD_MASS[o.mass];
+        delete o.mass}
+      return o});
+    let art=src.art;
+    if(!art){const hasM=kehren.some(k=>k.massLage),hasS=kehren.some(k=>k.stock.length);art=hasM&&!hasS?"mass":"stock"}
+    return{art,kehren}});
+  return n;
+}
+function massCode(k){if(k.massLage==="NK")return"NK";return k.massLage&&k.massRing?k.massLage+k.massRing:""}
+function massText(k){if(!k.massLage)return"";if(k.massLage==="NK")return"Nicht im Kasten";return LAGE_SHORT[k.massLage]+(k.massRing?" · Ring "+k.massRing:" · Ring fehlt")}
+function kehreShort(sp,k){if(sp.art==="mass"){if(!k.massLage)return"";if(k.massLage==="NK")return"nicht im Kasten";return LAGE_SHORT[k.massLage]+(k.massRing?" · R"+k.massRing:"")}return stockCodes(k)}
+function kehreDone(sp,k){return sp.art==="mass"?!!massCode(k):stockArr(k).length>0}
+function stingelOf(t,g,k){const kh=t.spiele[g].kehren[k];return(g===0||kh.stingelOwn)?kh.stingel:t.spiele[0].kehren[k].stingel}
+function lsLoad(){try{const r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):[]}catch(e){return[]}}
+function lsSave(){try{localStorage.setItem(LS_KEY,JSON.stringify(S.trainings));return true}catch(e){setSave("Speicherfehler – bitte Daten sichern");return false}}
+function coll(){return S.db.collection("data/users/"+S.uid)}
+
+let saveTimer=null;
+function queueSave(){
+  if(!S.cur)return;
+  S.cur.updatedAt=Date.now();
+  const i=S.trainings.findIndex(t=>t.id===S.cur.id);
+  if(i<0)S.trainings.push(S.cur);else S.trainings[i]=S.cur;
+  lsSave();
+  setSave("Speichert …");
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(persistCur,700);
+}
+async function persistCur(){
+  const t=S.cur;if(!t)return;
+  if(S.db&&S.uid){
+    try{await coll().doc(t.id).set(JSON.parse(JSON.stringify(t)));setSave("Gespeichert")}
+    catch(e){setSave("Nur auf diesem Gerät gespeichert")}
+  }else setSave("Auf diesem Gerät gespeichert");
+}
+function setSave(txt){S.saveState=txt;const el=document.getElementById("savestate");if(el)el.textContent=txt}
+const META_KEY="stock_trainingsbuch_meta_v1";
+const META={cfgTs:0,matTs:0,splTs:0,deleted:{},lastExport:0,lastImport:0};
+try{const r=localStorage.getItem(META_KEY);if(r)Object.assign(META,JSON.parse(r))}catch(e){}
+function saveMeta(){try{localStorage.setItem(META_KEY,JSON.stringify(META))}catch(e){}}
+async function removeTraining(id){
+  META.deleted[id]=Date.now();saveMeta();
+  S.trainings=S.trainings.filter(t=>t.id!==id);lsSave();
+  if(S.cur&&S.cur.id===id)S.cur=null;
+  if(S.db&&S.uid){try{await coll().doc(id).delete()}catch(e){}}
+}
+
+/* ---------- Statistik ---------- */
+function calc(list){
+  const sMax=stockMax(),mMax=massMax();
+  const r={stock:0,stockHit:0,stockPts:0,stockMaxPts:0,mass:0,massHit:0,massPts:0,massMaxPts:0,inRing:0,ringSum:0,stockBy:{},lageBy:{},ringBy:{},dir:{L:[0,0],M:[0,0],R:[0,0]},perSpiel:Array.from({length:SPIELE},()=>({stock:0,stockHit:0,stockPts:0,stockMaxPts:0,mass:0,massHit:0,massPts:0,massMaxPts:0}))};
+  list.forEach(t=>t.spiele.forEach((sp,g)=>sp.kehren.forEach(k=>{
+    if(sp.art!=="mass"){ const arr=stockArr(k);if(!arr.length)return;
+      r.stock++;arr.forEach(c=>r.stockBy[c]=(r.stockBy[c]||0)+1);const h=stockHit(k);if(h)r.stockHit++;
+      r.perSpiel[g].stock++;if(h)r.perSpiel[g].stockHit++;
+      const pt=stockPoints(k);r.stockPts+=pt;r.stockMaxPts+=sMax;r.perSpiel[g].stockPts+=pt;r.perSpiel[g].stockMaxPts+=sMax;
+      if(k.richtung&&r.dir[k.richtung]){r.dir[k.richtung][0]++;if(h)r.dir[k.richtung][1]++}
+    }else{ if(!massCode(k))return;
+      r.mass++;r.lageBy[k.massLage]=(r.lageBy[k.massLage]||0)+1;const h=massHitK(k);if(h)r.massHit++;
+      if(k.massLage!=="NK"){r.inRing++;r.ringSum+=+k.massRing;r.ringBy[k.massRing]=(r.ringBy[k.massRing]||0)+1}
+      const pt=massPoints(k);r.massPts+=pt;r.massMaxPts+=mMax;r.perSpiel[g].massPts+=pt;r.perSpiel[g].massMaxPts+=mMax;
+      r.perSpiel[g].mass++;if(h)r.perSpiel[g].massHit++}
+  })));
+  return r;
+}
+const pct=(a,b)=>b?Math.round(a/b*100):null;
+const fmtPct=(a,b)=>{const p=pct(a,b);return p===null?"–":p+" %"};
+const fmtPts=n=>(Math.round(n*10)/10).toString().replace(".",",");
+function fmtDate(d){if(!d)return"";const[y,m,dd]=d.split("-");return dd+"."+m+"."+y}
+
+/* ---------- Rendering ---------- */
+const app=document.getElementById("app");
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function render(){
+  app.classList.toggle("editmode",S.view==="edit"&&!!S.cur);
+  ["list","edit","stats","cfg","mat"].forEach(v=>{const b=document.getElementById("nav-"+v);if(S.view===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+  if(S.view==="list")renderList();else if(S.view==="edit")renderEdit();else if(S.view==="cfg")renderCfg();else if(S.view==="mat")renderMat();else renderStats();
+}
+function filtered(){return S.trainings.filter(t=>S.filter==="Alle"||t.spieler===S.filter).sort((a,b)=>(b.datum+b.zeit).localeCompare(a.datum+a.zeit))}
+function filterSeg(){return`<div class="seg" role="group" aria-label="Spieler">${["Alle",...new Set([...names(),...S.trainings.map(t=>t.spieler)])].map(p=>`<button class="${p==="Alle"?"":pcl(p)}" data-filter="${esc(p)}" aria-pressed="${S.filter===p}">${esc(p)}</button>`).join("")}</div>`}
+
+function renderList(){
+  const list=filtered();
+  app.innerHTML=`
+  <header class="row between"><div><div class="eyebrow">Stocksport · Persönlich · V${APP_VERSION}</div><h1>Trainingsbuch</h1></div></header>
+  ${filterSeg()}
+  <div class="grid2">
+    <button class="btn primary" id="newT">+ Neues Training</button>
+    <button class="btn" id="xlsAll">Excel exportieren</button>
+  </div>
+  <button class="btn ghost small" id="pdfBlank">Leere PDF-Vorlage zum händischen Eintragen</button>
+  ${!S.loaded?`<div class="card empty"><span class="muted">Trainings werden geladen …</span></div>`:
+    list.length?`<div class="list">${list.map(t=>{const c=calc([t]);const del=S.confirmDel===t.id;return`
+      <div class="item ${pcl(t.spieler)}">
+        <button data-open="${t.id}" style="all:unset;cursor:pointer;display:grid;gap:2px;min-width:0">
+          <span class="t num">${fmtDate(t.datum)} <span class="muted" style="font-size:15px">${esc(t.zeit)}</span></span>
+          <span class="row" style="gap:6px"><span class="pill pl ${pcl(t.spieler)}">${esc(t.spieler)}</span>${t.temperatur!==""?`<span class="pill">${esc(t.temperatur)} °C</span>`:""}</span>
+        </button>
+        <div class="quotes">
+          <span class="pill ar a-stock" title="Stockschuss: Trefferquote · Punkte">Stock ${fmtPct(c.stockHit,c.stock)} · ${fmtPts(c.stockPts)} P</span>
+          <span class="pill ar a-mass" title="Massschuss: Trefferquote · Punkte">Mass ${fmtPct(c.massHit,c.mass)} · ${fmtPts(c.massPts)} P</span>
+          ${del?`<button class="btn danger small" data-delyes="${t.id}">Wirklich löschen</button><button class="btn small" data-delno="1">Abbrechen</button>`
+               :`<button class="btn ghost small" data-del="${t.id}" aria-label="Training löschen">Löschen</button>`}
+        </div>
+      </div>`}).join("")}</div>`
+    :`<div class="card empty"><h3>Noch kein Training erfasst</h3><p class="muted" style="margin:0">Tippe auf „Neues Training“. Datum und Uhrzeit werden automatisch eingetragen.</p></div>`}
+  <section class="card sync">
+    <div class="sect-h"><h3>Daten zwischen Geräten</h3><span class="note">Trainings · Spieler · Wertung · Material</span></div>
+    <div class="grid2">
+      <button class="btn" id="bkExport">Daten sichern</button>
+      <button class="btn" id="bkImport">Daten laden</button>
+    </div>
+    <input type="file" id="bkFile" accept=".json,application/json" hidden>
+    <p class="note" style="margin:0">Sichern speichert eine Datei, z. B. in deinen OneDrive-Ordner. Am anderen Gerät „Daten laden“ und die Datei wählen: neue Trainings kommen dazu, bei gleichen gewinnt die zuletzt geänderte Fassung, gelöschte bleiben gelöscht.</p>
+    <div class="mini muted"><span>Zuletzt gesichert: <b>${META.lastExport?fmtStamp(META.lastExport):"noch nie"}</b></span><span>Zuletzt geladen: <b>${META.lastImport?fmtStamp(META.lastImport):"noch nie"}</b></span></div>
+    ${S.importReport?`<div class="report">${S.importReport}</div>`:""}
+  </section>
+  <p class="note">${S.db?"Trainings werden in deinem Konto gespeichert und sind auf allen Geräten verfügbar.":"Trainings werden in diesem Browser auf diesem Gerät gespeichert. Regelmäßig als Excel sichern."}</p>`;
+}
+
+function renderEdit(){
+  if(!S.cur){
+    app.innerHTML=`<div class="card empty"><h3>Kein Training geöffnet</h3><p class="muted" style="margin:0">Starte ein neues Training oder öffne eines aus der Liste.</p>
+      <div class="row">${names().map(p=>`<button class="btn primary" data-newfor="${esc(p)}">Training für ${esc(p)}</button>`).join("")}</div></div>`;return;
+  }
+  const t=S.cur,g=S.g,k=S.k,sp=t.spiele[g],kh=sp.kehren[k],c=calc([t]);
+  const st=stingelOf(t,g,k);
+  const sel=stockArr(kh);
+  const chips=(arr)=>arr.map(([code,label,tone])=>`<button class="chip ${tone||""}" data-stock="${code}" aria-pressed="${sel.includes(code)}"><span class="code">${code}</span>${label}</button>`).join("");
+  const lchip=(code,label)=>`<button class="chip center ${code==="NK"?"bad":""}" data-set="massLage" data-val="${code}" aria-pressed="${kh.massLage===code}">${label}</button>`;
+  const ringOff=kh.massLage==="NK";
+  const M=matOf(t.spieler);
+  const picks=(list,cur,field,what)=>`<div class="picks" role="group" aria-label="${what} auswählen">${list.length?list.map(v=>`<button class="pick" data-pick="${field}" data-val="${esc(v)}" aria-pressed="${String(cur)===v}">${esc(v)}</button>`).join(""):`<button class="pick add" data-go="mat">+ ${what} im Material anlegen</button>`}</div>`;
+  const stockSec=`
+  <section class="card a-stock" aria-label="Stockschuss">
+    <div class="sect-h"><h3>Stockschuss</h3><span class="note">Treffer = Stock getroffen</span></div>
+    <div class="grid2">
+      <label class="f inl">Schussplatte<input class="in" type="text" id="f-schussplatte" value="${esc(kh.schussplatte)}" placeholder="Platte"></label>
+      <div class="dirbox" style="display:grid;gap:4px;font-size:12px;color:var(--muted);font-weight:500">Treffer
+        <div class="seg" role="group" aria-label="Trefferrichtung">${RICHTUNG.map(([c,l])=>`<button data-set="richtung" data-val="${c}" aria-pressed="${kh.richtung===c}">${l}</button>`).join("")}</div>
+      </div>
+    </div>
+    ${picks(M.platten,kh.schussplatte,"schussplatte","Platte")}
+    <div class="row between"><span class="eyebrow">Ergebnis</span><span class="multi">Doppelauswahl möglich · ${sel.length}/${STOCK_MAX}</span></div>
+    <div class="grid2 chipsgrid">${chips(STOCK)}</div>
+  </section>`;
+  const massSec=`
+  <section class="card a-mass" aria-label="Massschuss">
+    <div class="sect-h"><h3>Massschuss</h3><span class="note">Lage + Ring wählen</span></div>
+    <div class="platrow"><label class="f inl">Massplatte<input class="in" type="text" id="f-massplatte" value="${esc(kh.massplatte)}" placeholder="Platte"></label>${picks(M.platten,kh.massplatte,"massplatte","Platte")}</div>
+    <div class="eyebrow">1 · Lage zur Taube</div>
+    <div class="feld">
+      ${lchip("LH","links hinter")}<div></div>${lchip("RH","rechts hinter")}
+      ${lchip("L","links")}<div class="taube"><span><i></i>Taube</span></div>${lchip("R","rechts")}
+      <div></div>${lchip("V","vor")}<div></div>
+    </div>
+    <div class="eyebrow">2 · Ring</div>
+    <div class="rings">${RINGE.map(([r])=>`<button class="chip center good" data-set="massRing" data-val="${r}" aria-pressed="${!ringOff&&kh.massRing===r}" ${ringOff?"disabled":""}>${r}</button>`).join("")}</div>
+    ${lchip("NK","Nicht im Kasten")}
+    <div class="massres ${massCode(kh)?(kh.massLage==="NK"?"bad":"good"):""}">${kh.massLage?esc(massText(kh)):"Noch keine Auswahl"}</div>
+  </section>`;
+  app.innerHTML=`
+  <div class="side">
+  <header class="row between">
+    <div class="${pcl(t.spieler)}"><div class="eyebrow"><span class="who"></span>Training ${esc(t.spieler)}</div><h1 class="num">${fmtDate(t.datum)}</h1></div>
+    <span class="save" id="savestate" aria-live="polite">${esc(S.saveState)}</span>
+  </header>
+  <section class="card" aria-label="Trainingsdaten">
+    <div class="seg" role="group" aria-label="Spieler">${[...new Set([...names(),t.spieler])].map(p=>`<button class="${pcl(p)}" data-player="${esc(p)}" aria-pressed="${t.spieler===p}">${esc(p)}</button>`).join("")}</div>
+    <div class="grid3">
+      <label class="f">Datum<input class="in" type="date" id="f-datum" value="${esc(t.datum)}"></label>
+      <label class="f">Zeit<input class="in" type="time" id="f-zeit" value="${esc(t.zeit)}"></label>
+      <label class="f">Temp. °C<input class="in" type="text" inputmode="decimal" id="f-temp" value="${esc(t.temperatur)}" placeholder="z. B. 4"></label>
+    </div>
+  </section>
+  <div class="tabs" role="group" aria-label="Spiel">${t.spiele.map((x,i)=>{const d=x.kehren.filter(kk=>kehreDone(x,kk)).length;return`<button class="tab a-${x.art}" data-g="${i}" aria-pressed="${i===g}"><b>Spiel ${i+1}</b><small class="num">${x.art==="mass"?"Mass":"Stock"} · ${d}/${KEHREN}</small></button>`}).join("")}</div>
+  <div class="seg" role="group" aria-label="Art für Spiel ${g+1}">${ART.map(([a,l])=>`<button class="a-${a}" data-art="${a}" aria-pressed="${sp.art===a}">${l}</button>`).join("")}</div>
+  <div class="kehren" role="group" aria-label="Kehre">${sp.kehren.map((x,i)=>`<button class="kehre ${kehreDone(sp,x)?"done":""}" data-k="${i}" aria-pressed="${i===k}" aria-label="Kehre ${i+1}"><span class="kn-s">${i+1}</span><span class="kn-l">Kehre ${i+1}</span><span class="ks">${esc(kehreShort(sp,x))}</span></button>`).join("")}</div>
+  </div>
+
+  <div class="main">
+  <section class="card a-${sp.art}" aria-label="Kehre">
+    <h2>Spiel ${g+1} · Kehre ${k+1}<span class="artlbl"> · ${sp.art==="mass"?"Massschuss":"Stockschuss"}</span></h2>
+    <div class="stgwrap">${picks(M.stingel,st,"stingel","Stingel")}<label class="f stg">Stingel<input class="in" type="text" id="f-stingel" value="${esc(st)}" placeholder="Eingabe"></label></div>
+    ${g>0?(kh.stingelOwn?`<div class="row between"><span class="note">Eigener Wert für Spiel ${g+1}</span><button class="btn ghost small" data-stingelreset="1">Aus Spiel 1 übernehmen</button></div>`
+      :`<span class="note">${t.spiele[0].kehren[k].stingel?"Aus Spiel 1 übernommen – einfach überschreiben zum Ändern":"Wird aus Spiel 1 übernommen, sobald dort ein Wert steht"}</span>`):""}
+  </section>
+  ${sp.art==="mass"?massSec:stockSec}
+
+  <div class="grid2">
+    <button class="btn" id="prevK" ${g===0&&k===0?"disabled":""}>‹ Zurück</button>
+    <button class="btn primary" id="nextK" ${g===SPIELE-1&&k===KEHREN-1?"disabled":""}>Weiter ›</button>
+  </div>
+  </div>
+
+  <section class="card sum" aria-label="Zwischenstand">
+    <div class="row between"><h3>Dieses Training</h3><button class="btn small" id="pdfCur">PDF</button></div>
+    <div class="mini"><span class="pill ar a-stock">Stock&nbsp;<b>${fmtPct(c.stockHit,c.stock)}</b>&nbsp;· ${fmtPts(c.stockPts)} P</span><span class="pill ar a-mass">Mass&nbsp;<b>${fmtPct(c.massHit,c.mass)}</b>&nbsp;· ${fmtPts(c.massPts)} P</span></div>
+  </section>`;
+}
+
+function barRows(arr,by,total,hitSet){
+  return arr.map(([code,label])=>{const n=by[code]||0;const p=total?n/total*100:0;
+    return`<div class="bar"><div><div class="lbl"><span>${label}</span><span class="muted num">${n}</span></div><div class="track"><div class="fill ${hitSet.has(code)?"good":"bad"}" style="width:${p.toFixed(1)}%"></div></div></div><span class="pct">${total?Math.round(p)+" %":"–"}</span></div>`}).join("");
+}
+function performanceScore(c){
+  const got=c.stockPts+c.massPts,max=c.stockMaxPts+c.massMaxPts;
+  return max?Math.max(0,Math.min(100,Math.round(got/max*100))):null;
+}
+function scoreText(v){if(v===null)return"Noch keine Wertung";if(v>=90)return"Sehr starke Leistung";if(v>=75)return"Starke Leistung";if(v>=60)return"Solide Leistung";if(v>=40)return"Ausbaufähig";return"Trainingspotenzial"}
+function playerAnalysis(list){
+  const groups={};list.forEach(t=>(groups[t.spieler]||(groups[t.spieler]=[])).push(t));
+  return Object.entries(groups).map(([name,ts])=>{const c=calc(ts),scores=ts.map(t=>performanceScore(calc([t]))).filter(v=>v!==null);return{name,count:ts.length,score:performanceScore(c),best:scores.length?Math.max(...scores):null,stock:pct(c.stockPts,c.stockMaxPts),mass:pct(c.massPts,c.massMaxPts)}}).sort((a,b)=>a.name.localeCompare(b.name));
+}
+function monthlyAnalysis(list){
+  const m={};list.forEach(t=>{const key=(t.datum||"").slice(0,7);if(key)(m[key]||(m[key]=[])).push(t)});
+  return Object.entries(m).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,12).map(([key,ts])=>({key,count:ts.length,score:performanceScore(calc(ts))}));
+}
+function renderStats(){
+  const base=filtered();
+  const scoped=S.scope==="aktuell"&&S.cur?[S.cur]:base;
+  const c=calc(scoped);
+  const avgRing=c.inRing?(c.ringSum/c.inRing).toFixed(1).replace(".",","):"–";
+  const trend=base.slice(0,10);
+  const score=performanceScore(c);
+  const individualScores=scoped.map(t=>({t,score:performanceScore(calc([t]))})).filter(x=>x.score!==null);
+  const best=individualScores.length?Math.max(...individualScores.map(x=>x.score)):null;
+  const recentScores=base.slice(0,3).map(t=>performanceScore(calc([t]))).filter(v=>v!==null);
+  const olderScores=base.slice(3,6).map(t=>performanceScore(calc([t]))).filter(v=>v!==null);
+  const rav=recentScores.length?recentScores.reduce((a,b)=>a+b,0)/recentScores.length:null,oav=olderScores.length?olderScores.reduce((a,b)=>a+b,0)/olderScores.length:null;
+  const delta=rav!==null&&oav!==null?Math.round(rav-oav):null;
+  const players=playerAnalysis(scoped),months=monthlyAnalysis(scoped);
+  const lageHit=new Set(["V","L","R","LH","RH"]),ringHit={has:r=>!!CFG.ringHit[r]};
+  app.innerHTML=`
+  <header><div class="eyebrow">Trefferquote</div><h1>Auswertung</h1></header>
+  ${filterSeg()}
+  <div class="seg" role="group" aria-label="Umfang">
+    <button data-scope="alle" aria-pressed="${S.scope!=="aktuell"}">Alle Trainings</button>
+    <button data-scope="aktuell" aria-pressed="${S.scope==="aktuell"}" ${S.cur?"":"disabled"}>Offenes Training</button>
+  </div>
+  <section class="card scorehero">
+    <div class="scorecircle" style="--score:${score===null?0:score*3.6}deg"><div class="sv">${score===null?"–":score}<small>von 100 Punkten</small></div></div>
+    <div><div class="eyebrow">V12 · Leistungsindex</div><h2>${scoreText(score)}</h2><p class="muted" style="margin:6px 0 0">Der Trainingsscore basiert auf den erreichten Punkten im Verhältnis zur maximal möglichen Wertung. Damit passt er sich automatisch deiner Wertungskonfiguration an.</p></div>
+  </section>
+  <section class="analysisgrid">
+    <div class="kpi"><span class="eyebrow">Bestleistung</span><span class="v">${best===null?"–":best}</span><span class="s">Punkte / 100</span></div>
+    <div class="kpi a-stock"><span class="eyebrow">Stock-Leistung</span><span class="v">${fmtPct(c.stockPts,c.stockMaxPts)}</span><span class="s">nach Wertungspunkten</span></div>
+    <div class="kpi a-mass"><span class="eyebrow">Mass-Leistung</span><span class="v">${fmtPct(c.massPts,c.massMaxPts)}</span><span class="s">nach Wertungspunkten</span></div>
+    <div class="kpi"><span class="eyebrow">Trend letzte 3</span><span class="v ${delta>0?"trendup":delta<0?"trenddown":""}">${delta===null?"–":(delta>0?"+":"")+delta}</span><span class="s">Punkte ggü. vorherigen 3</span></div>
+    <div class="kpi"><span class="eyebrow">Trainings</span><span class="v">${scoped.length}</span><span class="s">in aktueller Auswahl</span></div>
+    <div class="kpi"><span class="eyebrow">Gewertete Schüsse</span><span class="v">${c.stock+c.mass}</span><span class="s">Stock + Mass</span></div>
+  </section>
+  <section class="big">
+    <div class="kpi a-stock"><span class="eyebrow">Stockschuss · Treffer</span><span class="v">${fmtPct(c.stockHit,c.stock)}</span><span class="s num">${c.stockHit} von ${c.stock} Treffer</span></div>
+    <div class="kpi a-mass"><span class="eyebrow">Massschuss · Treffer</span><span class="v">${fmtPct(c.massHit,c.mass)}</span><span class="s num">${c.massHit} von ${c.mass} Treffer · Ø Ring ${avgRing}</span></div>
+    <div class="kpi a-stock"><span class="eyebrow">Stockschuss · Punkte</span><span class="v">${fmtPct(c.stockPts,c.stockMaxPts)}</span><span class="s num">${fmtPts(c.stockPts)} von ${fmtPts(c.stockMaxPts)} P · Ø ${c.stock?fmtPts(c.stockPts/c.stock):"–"} P/Schuss</span></div>
+    <div class="kpi a-mass"><span class="eyebrow">Massschuss · Punkte</span><span class="v">${fmtPct(c.massPts,c.massMaxPts)}</span><span class="s num">${fmtPts(c.massPts)} von ${fmtPts(c.massMaxPts)} P · Ø ${c.mass?fmtPts(c.massPts/c.mass):"–"} P/Schuss</span></div>
+  </section>
+  ${c.stock+c.mass===0?`<div class="card empty"><span class="muted">Noch keine Schüsse für diese Auswahl erfasst.</span></div>`:`
+  ${c.stock?`<section class="card"><h3>Stockschuss nach Richtung</h3>
+    <div class="scroll"><table class="t"><thead><tr><th>Richtung</th><th>Schüsse</th><th>Treffer</th><th>Quote</th></tr></thead><tbody>
+    ${RICHTUNG.map(([cd,l])=>`<tr><td>${l}</td><td>${c.dir[cd][0]}</td><td>${c.dir[cd][1]}</td><td><b>${fmtPct(c.dir[cd][1],c.dir[cd][0])}</b></td></tr>`).join("")}
+    </tbody></table></div></section>
+  <section class="card"><h3>Stockschuss · Ergebnisse</h3><div class="bars">${barRows(STOCK,c.stockBy,c.stock,STOCK_HIT)}</div></section>`:""}
+  ${c.mass?`<section class="card"><h3>Massschuss · Lage zur Taube</h3><div class="bars">${barRows(LAGE,c.lageBy,c.mass,lageHit)}</div></section>
+  <section class="card"><h3>Massschuss · Ring</h3><div class="bars">${barRows(RINGE,c.ringBy,c.inRing,ringHit)}</div><span class="note">Anteil an den Schüssen im Ring</span></section>`:""}
+  <section class="card"><h3>Nach Spiel</h3>
+    <div class="scroll"><table class="t"><thead><tr><th>Spiel</th><th>Stock</th><th>Quote</th><th>Punkte</th><th>Mass</th><th>Quote</th><th>Punkte</th></tr></thead><tbody>
+    ${c.perSpiel.map((p,i)=>`<tr><td>Spiel ${i+1}</td><td>${p.stockHit}/${p.stock}</td><td><b>${fmtPct(p.stockHit,p.stock)}</b></td><td>${fmtPts(p.stockPts)}</td><td>${p.massHit}/${p.mass}</td><td><b>${fmtPct(p.massHit,p.mass)}</b></td><td>${fmtPts(p.massPts)}</td></tr>`).join("")}
+    </tbody></table></div></section>`}
+  ${S.scope!=="aktuell"&&trend.length?`<section class="card"><h3>Letzte Trainings</h3>
+    <div class="scroll"><table class="t"><thead><tr><th>Datum</th><th>Spieler</th><th>Stock</th><th>Mass</th></tr></thead><tbody>
+    ${trend.map(t=>{const x=calc([t]);return`<tr><td class="num">${fmtDate(t.datum)}</td><td style="text-align:left" class="${pcl(t.spieler)}"><span class="who"></span>${esc(t.spieler)}</td><td>${fmtPct(x.stockHit,x.stock)}</td><td>${fmtPct(x.massHit,x.mass)}</td></tr>`}).join("")}
+    </tbody></table></div></section>`:""}
+  ${S.scope!=="aktuell"&&players.length?`<section class="card"><h3>Spieler-Vergleich</h3><div class="scroll"><table class="t"><thead><tr><th>Spieler</th><th>Trainings</th><th>Score</th><th>Best</th><th>Stock</th><th>Mass</th></tr></thead><tbody>${players.map(p=>`<tr><td class="${pcl(p.name)}"><span class="who"></span>${esc(p.name)}</td><td>${p.count}</td><td><b>${p.score===null?"–":p.score}</b></td><td>${p.best===null?"–":p.best}</td><td>${p.stock===null?"–":p.stock+" %"}</td><td>${p.mass===null?"–":p.mass+" %"}</td></tr>`).join("")}</tbody></table></div></section>`:""}
+  ${S.scope!=="aktuell"&&months.length?`<section class="card"><h3>Monatsentwicklung</h3><div class="scroll"><table class="t"><thead><tr><th>Monat</th><th>Trainings</th><th>Leistung</th></tr></thead><tbody>${months.map(m=>{const[y,mo]=m.key.split("-");return`<tr><td>${mo}.${y}</td><td>${m.count}</td><td><b>${m.score===null?"–":m.score+" / 100"}</b></td></tr>`}).join("")}</tbody></table></div></section>`:""}
+  <button class="btn" id="xlsAll">Excel exportieren</button>
+  <p class="note">Was als Treffer zählt und wie viele Punkte es gibt, legst du unter „Wertung“ fest. Punkte-% = erreichte Punkte ÷ maximal mögliche Punkte.</p>`;
+}
+
+function renderCfg(){
+  const row=(label,code,ptsPath,ptsVal,hitPath,hitVal,extra)=>`<div class="cfgrow">
+      <span class="cfglbl">${code?`<span class="code">${code}</span>`:""}${label}</span>
+      <input class="in cfgin" type="number" step="1" inputmode="decimal" id="cfg-${ptsPath.replace(".","-")}" data-cfg="${ptsPath}" value="${esc(ptsVal)}" aria-label="Punkte ${esc(label)}">
+      ${hitPath?`<label class="tgl"><input type="checkbox" id="cfg-${hitPath.replace(".","-")}" data-cfgchk="${hitPath}" ${hitVal?"checked":""}><span>Treffer</span></label>`:`<span class="tgl muted">${extra||""}</span>`}
+    </div>`;
+  app.innerHTML=`
+  <header><div class="eyebrow">Für Roland und Sabine</div><h1>Wertung</h1></header>
+  <p class="note" style="margin:0">Änderungen gelten sofort für alle Trainings – auch für bereits erfasste. Die Trefferquote zählt die Schüsse mit Haken „Treffer“. Punkte-% = erreichte Punkte ÷ maximal mögliche Punkte.</p>
+  <div class="cfggrid">
+  <section class="card a-stock"><div class="sect-h"><h3>Stockschuss</h3><span class="note">max. ${fmtPts(stockMax())} P pro Schuss</span></div>
+    <div class="cfghead"><span>Ergebnis</span><span>Punkte</span><span>Zählt als</span></div>
+    ${STOCK.map(([c,l])=>row(l,c,"stockPts."+c,CFG.stockPts[c],"stockHit."+c,CFG.stockHit[c])).join("")}
+    <p class="note" style="margin:0">Bei Doppelauswahl zählt das Ergebnis mit den meisten Punkten.</p>
+  </section>
+  <section class="card a-mass"><div class="sect-h"><h3>Massschuss</h3><span class="note">max. ${fmtPts(massMax())} P pro Schuss</span></div>
+    <div class="cfghead"><span>Ring</span><span>Punkte</span><span>Zählt als</span></div>
+    ${RINGE.map(([r,l])=>row(l,"","ringPts."+r,CFG.ringPts[r],"ringHit."+r,CFG.ringHit[r])).join("")}
+    ${row("Nicht im Kasten","","nkPts",CFG.nkPts,"",false,"kein Treffer")}
+    <div class="cfghead" style="margin-top:6px"><span>Lage zur Taube</span><span>Zu-/Abschlag</span><span></span></div>
+    ${LAGE.filter(x=>x[0]!=="NK").map(([c,l])=>row(l,"","lageAdj."+c,CFG.lageAdj[c],"",false,"+/− Punkte")).join("")}
+    <p class="note" style="margin:0">Punkte = Ring-Punkte + Zuschlag der Lage (nie unter 0). Beispiel: Ring 2 links = ${fmtPts(Math.max(0,num(CFG.ringPts["2"])+num(CFG.lageAdj.L)))} P.</p>
+  </section>
+  </div>
+  <div class="row">${S.confirmReset?`<button class="btn danger" id="cfgResetYes">Ja, Standard wiederherstellen</button><button class="btn" id="cfgResetNo">Abbrechen</button>`:`<button class="btn ghost" id="cfgReset">Standardwerte wiederherstellen</button>`}<span class="save" id="savestate">${esc(S.saveState)}</span></div>`;
+}
+let cfgTimer=null;
+function saveCfg(keepTs){
+  if(!keepTs){META.cfgTs=Date.now();saveMeta()}
+  try{localStorage.setItem(CFG_KEY,JSON.stringify(CFG))}catch(e){}
+  setSave("Speichert …");clearTimeout(cfgTimer);
+  cfgTimer=setTimeout(async()=>{if(S.db&&S.uid){try{await coll().doc("_wertung").set(Object.assign(JSON.parse(JSON.stringify(CFG)),{_ts:META.cfgTs}));setSave("Gespeichert")}catch(e){setSave("Nur auf diesem Gerät gespeichert")}}else setSave("Auf diesem Gerät gespeichert")},600);
+}
+function setCfgPath(path,val){const [a,b]=path.split(".");if(b===undefined)CFG[a]=val;else CFG[a][b]=val}
+function refreshCfgNotes(){const el=document.querySelectorAll(".cfggrid .sect-h .note");if(el[0])el[0].textContent="max. "+fmtPts(stockMax())+" P pro Schuss";if(el[1])el[1].textContent="max. "+fmtPts(massMax())+" P pro Schuss"}
+
+function renderMat(){
+  if(!names().includes(S.matP))S.matP=names()[0];
+  const p=S.matP,M=matOf(p);
+  const cnt=n=>S.trainings.filter(t=>t.spieler===n).length;
+  const splCard=`<section class="card"><div class="sect-h"><h3>Spieler</h3><span class="note">${SPL.length} Spieler · erscheinen in allen Auswahlfeldern</span></div>
+    <div class="matadd"><input class="in" type="text" id="spl-new" placeholder="Name, z. B. Franz" aria-label="Spieler hinzufügen" enterkeyhint="done" maxlength="24"><button class="btn primary" id="splAdd">Hinzufügen</button></div>
+    <div class="matlist">${SPL.map((x,i)=>`<div class="splrow ${pcl(x.name)}">
+      <button class="swatch" data-splcol="${i}" aria-label="Farbe von ${esc(x.name)} wechseln" title="Farbe wechseln"></button>
+      <input class="in" type="text" id="spl-name-${i}" data-splname="${i}" value="${esc(x.name)}" aria-label="Name Spieler ${i+1}" maxlength="24">
+      <button class="btn ghost small" data-splup="${i}" ${i===0?"disabled":""} aria-label="Nach oben">↑</button>
+      <button class="btn ghost small danger" data-spldel="${i}" ${SPL.length<2?"disabled":""} aria-label="${esc(x.name)} löschen">✕</button>
+      ${S.confirmSpl===i?`<div class="splconf"><span>${esc(x.name)} löschen? ${cnt(x.name)?cnt(x.name)+" Trainings bleiben erhalten.":"Keine Trainings vorhanden."}</span><button class="btn danger small" data-spldelyes="${i}">Ja, löschen</button><button class="btn small" data-spldelno="1">Abbrechen</button></div>`:""}
+    </div>`).join("")}</div>
+    <p class="note" style="margin:0">Name antippen zum Umbenennen – die Trainings des Spielers werden mit umbenannt. Farbpunkt antippen wechselt die Farbe. Der erste Spieler ist bei neuen Trainings vorausgewählt.</p>
+  </section>`;
+  const list=(kind,title,hint)=>`<section class="card"><div class="sect-h"><h3>${title}</h3><span class="note">${M[kind].length} Einträge</span></div>
+    <div class="matadd"><input class="in" type="text" id="mat-new-${kind}" placeholder="${hint}" aria-label="${title} hinzufügen" enterkeyhint="done"><button class="btn primary" data-matadd="${kind}">Hinzufügen</button></div>
+    <div class="matlist">${M[kind].length?M[kind].map((v,i)=>`<div class="matitem"><span class="nm">${esc(v)}</span>
+      ${kind==="stingel"?(M.std===v?`<span class="std">Standard</span>`:`<button class="btn ghost small" data-matstd="${i}">Als Standard</button>`):""}
+      <button class="btn ghost small" data-matup="${kind}:${i}" ${i===0?"disabled":""} aria-label="Nach oben">↑</button>
+      <button class="btn ghost small danger" data-matdel="${kind}:${i}" aria-label="${esc(v)} löschen">✕</button></div>`).join(""):`<p class="note" style="margin:0">Noch nichts eingetragen.</p>`}</div>
+  </section>`;
+  app.innerHTML=`
+  <header><div class="eyebrow">Auswahllisten für die Eingabe</div><h1>Spieler &amp; Material</h1></header>
+  ${splCard}
+  <div class="sect-h"><h3>Material von</h3></div>
+  <div class="seg" role="group" aria-label="Material von Spieler">${names().map(x=>`<button class="${pcl(x)}" data-matp="${esc(x)}" aria-pressed="${p===x}">${esc(x)}</button>`).join("")}</div>
+  <div class="matgrid">
+    ${list("stingel","Stingel","z. B. 21/A")}
+    ${list("platten","Platten","z. B. Gummi 52 Shore")}
+  </div>
+  <div class="row">${names().filter(x=>x!==p).map(x=>`<button class="btn ghost small" data-matcopy="${esc(x)}">Liste von ${esc(x)} übernehmen</button>`).join("")}<span class="save" id="savestate">${esc(S.saveState)}</span></div>
+  <p class="note">Der Standard-Stingel wird bei jedem neuen Training von ${esc(p)} automatisch eingetragen. Beim Erfassen tippst du Stingel und Platte einfach aus der Liste an – freie Eingabe bleibt möglich.</p>`;
+}
+let splTimer=null;
+function saveSpl(keepTs){
+  if(!keepTs){META.splTs=Date.now();saveMeta()}
+  try{localStorage.setItem(SPL_KEY,JSON.stringify(SPL))}catch(e){}
+  setSave("Speichert …");clearTimeout(splTimer);
+  splTimer=setTimeout(async()=>{if(S.db&&S.uid){try{await coll().doc("_spieler").set({list:JSON.parse(JSON.stringify(SPL)),_ts:META.splTs});setSave("Gespeichert")}catch(e){setSave("Nur auf diesem Gerät gespeichert")}}else setSave("Auf diesem Gerät gespeichert")},500);
+}
+function splAdd(){const el=document.getElementById("spl-new");const v=(el&&el.value||"").trim();if(!v)return;
+  if(names().includes(v)){toast("„"+v+"“ gibt es schon");return}
+  const used=SPL.map(x=>x.c);let c=1;for(let i=1;i<=NCOL;i++)if(!used.includes(i)){c=i;break}
+  SPL.push({name:v,c});matOf(v);saveSpl();saveMat();S.matP=v;render();toast(v+" angelegt")}
+async function splRename(i,val){const x=SPL[i];if(!x)return;const v=String(val||"").trim(),old=x.name;
+  if(v===old)return;
+  if(!v){toast("Der Name darf nicht leer sein");render();return}
+  if(names().includes(v)){toast("„"+v+"“ gibt es schon");render();return}
+  x.name=v;MAT[v]=matOf(old);delete MAT[old];
+  if(S.matP===old)S.matP=v;if(S.filter===old)S.filter=v;
+  const ch=S.trainings.filter(t=>t.spieler===old);ch.forEach(t=>{t.spieler=v;t.updatedAt=Date.now()});
+  lsSave();saveSpl();saveMat();render();toast(old+" heißt jetzt "+v+(ch.length?" · "+ch.length+" Trainings angepasst":""));
+  if(S.db&&S.uid)for(const t of ch){try{await coll().doc(t.id).set(JSON.parse(JSON.stringify(t)))}catch(e){}}
+}
+let matTimer=null;
+function saveMat(keepTs){
+  if(!keepTs){META.matTs=Date.now();saveMeta()}
+  try{localStorage.setItem(MAT_KEY,JSON.stringify(MAT))}catch(e){}
+  setSave("Speichert …");clearTimeout(matTimer);
+  matTimer=setTimeout(async()=>{if(S.db&&S.uid){try{await coll().doc("_material").set(Object.assign(JSON.parse(JSON.stringify(MAT)),{_ts:META.matTs}));setSave("Gespeichert")}catch(e){setSave("Nur auf diesem Gerät gespeichert")}}else setSave("Auf diesem Gerät gespeichert")},500);
+}
+function matAdd(kind){const el=document.getElementById("mat-new-"+kind);const v=(el&&el.value||"").trim();if(!v)return;const M=matOf(S.matP);
+  if(M[kind].includes(v)){toast("„"+v+"“ ist schon in der Liste");return}M[kind].push(v);if(kind==="stingel"&&!M.std)M.std=v;saveMat();render();
+  const n=document.getElementById("mat-new-"+kind);if(n)n.focus()}
+
+function fmtStamp(ts){const d=new Date(ts);return pad(d.getDate())+"."+pad(d.getMonth()+1)+"."+d.getFullYear()+" "+pad(d.getHours())+":"+pad(d.getMinutes())}
+function buildBackup(){
+  return JSON.stringify({app:"stock-trainingsbuch",format:1,exportedAt:Date.now(),
+    trainings:S.trainings,deleted:META.deleted,
+    wertung:CFG,wertungTs:META.cfgTs,material:MAT,materialTs:META.matTs,spieler:SPL,spielerTs:META.splTs},null,1);
+}
+async function doExport(){
+  const d=new Date();const name="Trainingsbuch_Sicherung_"+d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"_"+pad(d.getHours())+pad(d.getMinutes())+".json";
+  const ok=await offerFile(name,buildBackup());
+  if(ok!==false){META.lastExport=Date.now();saveMeta();if(S.view==="list")render()}
+}
+async function doImport(text){
+  let data;try{data=JSON.parse(text)}catch(e){S.importReport='<span class="bad">Die Datei ist keine gültige Sicherung.</span>';render();return}
+  if(!data||data.app!=="stock-trainingsbuch"||!Array.isArray(data.trainings)){S.importReport="Diese Datei ist keine Trainingsbuch-Sicherung.";render();document.querySelector(".report")?.classList.add("bad");return}
+  let neu=0,akt=0,gleich=0,entf=0;const changed=[],removed=[];
+  // Löschungen zusammenführen
+  const tomb=Object.assign({},META.deleted);
+  for(const [id,ts] of Object.entries(data.deleted||{}))if(!tomb[id]||ts>tomb[id])tomb[id]=ts;
+  META.deleted=tomb;
+  const byId=new Map(S.trainings.map(t=>[t.id,t]));
+  for(const raw of data.trainings){
+    if(!raw||!raw.id)continue;const t=normalize(raw);
+    if(tomb[t.id]&&tomb[t.id]>=(t.updatedAt||0))continue;
+    const loc=byId.get(t.id);
+    if(!loc){byId.set(t.id,t);changed.push(t);neu++}
+    else if((t.updatedAt||0)>(loc.updatedAt||0)){byId.set(t.id,t);changed.push(t);akt++}
+    else gleich++;
+  }
+  for(const [id,t] of byId){if(tomb[id]&&tomb[id]>=(t.updatedAt||0)){byId.delete(id);removed.push(id);entf++}}
+  S.trainings=[...byId.values()];
+  if(S.cur){S.cur=byId.get(S.cur.id)||null}
+  let wertung="beibehalten",material="beibehalten",spieler="beibehalten";
+  if(Array.isArray(data.spieler)&&(data.spielerTs||0)>META.splTs){SPL=cleanSpl(data.spieler);META.splTs=data.spielerTs;spieler="übernommen";saveSpl(true)}
+  if(data.wertung&&(data.wertungTs||0)>META.cfgTs){CFG=mergeCfg(data.wertung);META.cfgTs=data.wertungTs;wertung="übernommen";saveCfg(true)}
+  if(data.material&&(data.materialTs||0)>META.matTs){MAT=mergeMat(data.material);META.matTs=data.materialTs;material="übernommen";saveMat(true)}
+  META.lastImport=Date.now();saveMeta();lsSave();
+  if(S.db&&S.uid){
+    for(const t of changed){try{await coll().doc(t.id).set(JSON.parse(JSON.stringify(t)))}catch(e){}}
+    for(const id of removed){try{await coll().doc(id).delete()}catch(e){}}
+  }
+  S.importReport=`Sicherung vom ${fmtStamp(data.exportedAt||Date.now())} geladen: ${neu} neu, ${akt} aktualisiert, ${gleich} unverändert${entf?", "+entf+" gelöscht":""}. Spieler ${spieler}, Wertung ${wertung}, Material ${material}.`;
+  render();toast("Daten geladen");
+}
+
+/* ---------- Export ---------- */
+function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>el.hidden=true,2600)}
+async function offer(filename,data){ return offerFile(filename,data) }
+async function offerFile(filename,data){
+  if(!S.dl){
+    try{
+      const type=filename.endsWith(".pdf")?"application/pdf":filename.endsWith(".json")?"application/json":"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      const url=URL.createObjectURL(new Blob([data],{type}));
+      const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),4000);toast("Datei erstellt: "+filename);
+    }catch(e){toast("Export nicht möglich.");return false}
+    return true;
+  }
+  try{await S.dl.save({filename,data});toast("Datei gespeichert: "+filename);return true}
+  catch(e){const c=e&&e.code;if(c==="declined")return false;if(c==="rate_limited"){toast("Bitte kurz warten und erneut tippen.");return false}toast("Export nicht möglich ("+(c||"Fehler")+").");return false}
+}
+function buildPdf(t){
+  if(!window.jspdf){toast("PDF-Bibliothek nicht geladen. Bitte Seite neu laden.");return null}
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:"mm",format:"a4"});
+  const W=210,M=12;
+  doc.setFont("helvetica","bold");doc.setFontSize(16);doc.text("Stocksport Trainingsprotokoll",M,16);if(t){const pc=PCRGB[+pcl(t.spieler).slice(2)]||PCRGB[0];doc.setFillColor(...pc);doc.rect(W-M-30,10,30,8,"F");doc.setTextColor(255);doc.setFontSize(11);doc.text(t.spieler,W-M-15,15.5,{align:"center"});doc.setTextColor(0)}
+  doc.setFont("helvetica","normal");doc.setFontSize(10);
+  const f=(lbl,val,x,w)=>{doc.text(lbl,x,25);doc.line(x+doc.getTextWidth(lbl)+2,26,x+w,26);if(val)doc.text(String(val),x+doc.getTextWidth(lbl)+4,24.5)};
+  f("Spieler:",t?t.spieler:"",M,50);f("Datum:",t?fmtDate(t.datum):"",M+54,44);f("Zeit:",t?t.zeit:"",M+102,30);f("Temp.:",t&&t.temperatur!==""?t.temperatur+" °C":"",M+136,W-2*M-136);
+  if(!t){doc.setFontSize(8);doc.text("Spieler:  "+names().map(n=>"[ ] "+n).join("   "),M,31)}
+  const sty={fontSize:8.5,cellPadding:1.1,minCellHeight:6.2,halign:"center",valign:"middle",lineColor:[120,130,140],lineWidth:.2,textColor:[20,32,42]};
+  let y=34;
+  for(let g=0;g<SPIELE;g++){
+    const sp=t?t.spiele[g]:null;const art=sp?sp.art:null;
+    let head,body,foot;
+    if(!t){
+      head=[[{content:"Spiel "+(g+1)+"     [ ] Stockschuss   [ ] Massschuss",colSpan:7,styles:{halign:"left"}}],["Kehre","Stingel","Platte","L / M / R","Stock-Ergebnis (1-2)","Mass-Lage","Ring"]];
+      body=Array.from({length:KEHREN},(_,k)=>[String(k+1),"","","","","",""]);
+      foot=[[{content:"Quote / Punkte",colSpan:3},{content:"____ %     ____ P",colSpan:4}]];
+    }else if(art==="mass"){
+      head=[[{content:"Spiel "+(g+1)+" - Massschuss",colSpan:5,styles:{halign:"left"}}],["Kehre","Stingel","Massplatte","Lage","Ring"]];
+      body=sp.kehren.map((kh,k)=>[String(k+1),stingelOf(t,g,k),kh.massplatte,kh.massLage?LAGE_SHORT[kh.massLage]:"",kh.massLage==="NK"?"-":kh.massRing]);
+      const cs=calc([{spiele:[sp]}]);foot=[[{content:"Quote / Punkte",colSpan:3},{content:fmtPct(cs.massHit,cs.mass).replace("–","-")+"   "+fmtPts(cs.massPts)+" P",colSpan:2}]];
+    }else{
+      head=[[{content:"Spiel "+(g+1)+" - Stockschuss",colSpan:5,styles:{halign:"left"}}],["Kehre","Stingel","Schussplatte","L / M / R","Ergebnis"]];
+      body=sp.kehren.map((kh,k)=>[String(k+1),stingelOf(t,g,k),kh.schussplatte,kh.richtung,stockArr(kh).length===1?kh.stock[0]+" "+lab(STOCK,kh.stock[0]):stockCodes(kh)]);
+      const cs=calc([{spiele:[sp]}]);foot=[[{content:"Quote / Punkte",colSpan:3},{content:fmtPct(cs.stockHit,cs.stock).replace("–","-")+"   "+fmtPts(cs.stockPts)+" P",colSpan:2}]];
+    }
+    doc.autoTable({startY:y,theme:"grid",head,body,foot,styles:sty,
+      margin:{left:M,right:M,bottom:8},headStyles:{minCellHeight:5,fillColor:!t?[14,90,120]:(art==="mass"?[103,71,188]:[194,94,20]),textColor:255,fontStyle:"bold"},columnStyles:{0:{cellWidth:14}},
+      footStyles:{minCellHeight:5.5,fillColor:[227,233,237],textColor:[20,32,42],fontStyle:"bold"}});
+    y=doc.lastAutoTable.finalY+3;
+  }
+  doc.setFontSize(7.5);doc.setFont("helvetica","bold");doc.text("Stockschuss:",M,y+2);doc.setFont("helvetica","normal");
+  doc.text(STOCK.map(s=>s[0]+" = "+s[1]).join("   ")+"   (Doppelauswahl z. B. GA+EI)",M+19,y+2,{maxWidth:W-2*M-19});
+  doc.setFont("helvetica","bold");doc.text("Massschuss:",M,y+11);doc.setFont("helvetica","normal");
+  doc.text("Lage: vor / links / rechts / links hinter / rechts hinter der Taube oder nicht im Kasten  -  dazu Ring 1-5",M+19,y+11,{maxWidth:W-2*M-19});
+  if(t){const c=calc([t]);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("Gesamt: Stockschuss "+fmtPct(c.stockHit,c.stock).replace("–","-")+" / "+fmtPts(c.stockPts)+" P   Massschuss "+fmtPct(c.massHit,c.mass).replace("–","-")+" / "+fmtPts(c.massPts)+" P",M,y+19)}
+  return doc.output("arraybuffer");
+}
+function buildXlsx(list){
+  if(!window.XLSX){toast("Excel-Bibliothek nicht geladen. Bitte Seite neu laden.");return null}
+  const rows=[["Spieler","Datum","Zeit","Temperatur °C","Spiel","Art","Kehre","Stingel","Schussplatte","Richtung","Stockschuss","Massplatte","Lage","Ring","Treffer","Punkte"]];
+  const over=[["Spieler","Datum","Zeit","Temperatur °C","Stockschüsse","Stock-Treffer","Stock-Quote %","Stock-Punkte","Stock-Punkte %","Massschüsse","Mass-Treffer","Mass-Quote %","Mass-Punkte","Mass-Punkte %","Ø Ring"]];
+  list.slice().reverse().forEach(t=>{
+    t.spiele.forEach((sp,g)=>sp.kehren.forEach((k,i)=>{
+      const st=stingelOf(t,g,i);
+      if(!kehreDone(sp,k)&&!st&&!k.schussplatte&&!k.massplatte)return;
+      if(sp.art==="mass"){
+        rows.push([t.spieler,fmtDate(t.datum),t.zeit,t.temperatur,g+1,"Massschuss",i+1,st,"","","",k.massplatte,lab(LAGE,k.massLage),k.massLage==="NK"?"":(k.massRing?+k.massRing:""),massCode(k)?(massHitK(k)?"ja":"nein"):"",massCode(k)?massPoints(k):""]);
+      }else{
+        rows.push([t.spieler,fmtDate(t.datum),t.zeit,t.temperatur,g+1,"Stockschuss",i+1,st,k.schussplatte,lab(RICHTUNG,k.richtung),stockLabels(k),"","","",stockArr(k).length?(stockHit(k)?"ja":"nein"):"",stockArr(k).length?stockPoints(k):""]);
+      }
+    }));
+    const c=calc([t]);
+    over.push([t.spieler,fmtDate(t.datum),t.zeit,t.temperatur,c.stock,c.stockHit,pct(c.stockHit,c.stock)??"",c.stockPts,pct(c.stockPts,c.stockMaxPts)??"",c.mass,c.massHit,pct(c.massHit,c.mass)??"",c.massPts,pct(c.massPts,c.massMaxPts)??"",c.inRing?+(c.ringSum/c.inRing).toFixed(2):""]);
+  });
+  const wb=XLSX.utils.book_new();
+  const s1=XLSX.utils.aoa_to_sheet(over);s1["!cols"]=over[0].map(h=>({wch:Math.max(10,h.length+2)}));
+  const s2=XLSX.utils.aoa_to_sheet(rows);s2["!cols"]=rows[0].map((h,i)=>({wch:i===10||i===12?26:Math.max(8,h.length+2)}));
+  const w=[["Wertung","Ergebnis","Punkte","Treffer"],...STOCK.map(([c,l])=>["Stockschuss",c+" "+l,num(CFG.stockPts[c]),CFG.stockHit[c]?"ja":"nein"]),...RINGE.map(([r,l])=>["Massschuss",l,num(CFG.ringPts[r]),CFG.ringHit[r]?"ja":"nein"]),["Massschuss","Nicht im Kasten",num(CFG.nkPts),"nein"],...LAGE.filter(x=>x[0]!=="NK").map(([c,l])=>["Lage-Zuschlag",l,num(CFG.lageAdj[c]),""])];
+  const s3=XLSX.utils.aoa_to_sheet(w);s3["!cols"]=[{wch:14},{wch:32},{wch:8},{wch:8}];
+  XLSX.utils.book_append_sheet(wb,s1,"Übersicht");XLSX.utils.book_append_sheet(wb,s2,"Kehren");XLSX.utils.book_append_sheet(wb,s3,"Wertung");
+  return XLSX.write(wb,{type:"array",bookType:"xlsx"});
+}
+
+/* ---------- Ereignisse ---------- */
+function openTraining(id){const t=S.trainings.find(x=>x.id===id);if(!t)return;S.cur=t;S.g=0;S.k=0;
+  for(let g=0;g<SPIELE;g++)for(let k=0;k<KEHREN;k++){if(!kehreDone(t.spiele[g],t.spiele[g].kehren[k])){S.g=g;S.k=k;g=SPIELE;break}}
+  S.saveState="";S.view="edit";render();scrollTo(0,0)}
+function startNew(p){S.cur=newTraining(p||(names().includes(S.filter)?S.filter:names()[0]));S.g=0;S.k=0;S.saveState="";S.view="edit";queueSave();render();scrollTo(0,0)}
+function step(d){let i=S.g*KEHREN+S.k+d;i=Math.max(0,Math.min(SPIELE*KEHREN-1,i));S.g=Math.floor(i/KEHREN);S.k=i%KEHREN;render();
+  const h=document.querySelector('[aria-label="Kehre"].card');if(h)h.scrollIntoView({block:"start",behavior:"auto"})}
+
+document.querySelector(".nav").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;S.view=b.dataset.go;S.confirmDel=null;render();scrollTo(0,0)});
+app.addEventListener("keydown",e=>{const el=e.target;if(e.key==="Enter"&&el.id==="spl-new"){e.preventDefault();splAdd();return}
+  if(e.key==="Enter"&&el.dataset&&el.dataset.splname!==undefined){e.preventDefault();el.blur();return}
+  if(e.key==="Enter"&&el.id&&el.id.startsWith("mat-new-")){e.preventDefault();matAdd(el.id.slice(8))}});
+app.addEventListener("change",e=>{const el=e.target;
+  if(el.dataset&&el.dataset.splname!==undefined){splRename(+el.dataset.splname,el.value);return}
+  if(el.id==="bkFile"&&el.files&&el.files[0]){const fr=new FileReader();fr.onload=()=>doImport(String(fr.result||""));fr.onerror=()=>toast("Datei konnte nicht gelesen werden.");fr.readAsText(el.files[0]);return}if(el.dataset&&el.dataset.cfgchk){setCfgPath(el.dataset.cfgchk,el.checked);saveCfg()}});
+app.addEventListener("click",async e=>{
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  if(d.filter){S.filter=d.filter;render();return}
+  if(d.scope){S.scope=d.scope;render();return}
+  if(b.id==="newT"){startNew();return}
+  if(d.newfor){startNew(d.newfor);return}
+  if(d.open){openTraining(d.open);return}
+  if(d.del){S.confirmDel=d.del;render();return}
+  if(d.delno){S.confirmDel=null;render();return}
+  if(d.delyes){await removeTraining(d.delyes);S.confirmDel=null;render();toast("Training gelöscht");return}
+  if(d.player){const old=stdStingel(S.cur.spieler),neu=stdStingel(d.player);S.cur.spiele[0].kehren.forEach(k=>{if(k.stingel===old||k.stingel==="")k.stingel=neu});S.cur.spieler=d.player;queueSave();render();return}
+  if(d.g!==undefined){S.g=+d.g;S.k=0;render();return}
+  if(d.k!==undefined){S.k=+d.k;render();return}
+  if(d.stock){const kh=S.cur.spiele[S.g].kehren[S.k];const a=stockArr(kh).slice();const i=a.indexOf(d.stock);
+    if(i>=0)a.splice(i,1);else{if(a.length>=STOCK_MAX){toast("Maximal "+STOCK_MAX+" Ergebnisse pro Schuss");return}a.push(d.stock)}
+    kh.stock=a;queueSave();render();return}
+  if(d.go){S.view=d.go;render();scrollTo(0,0);return}
+  if(d.pick){const kh=S.cur.spiele[S.g].kehren[S.k];if(d.pick==="stingel"){kh.stingel=d.val;if(S.g>0)kh.stingelOwn=true}else kh[d.pick]=kh[d.pick]===d.val?"":d.val;queueSave();render();return}
+  if(b.id==="splAdd"){splAdd();return}
+  if(d.splcol!==undefined){const x=SPL[+d.splcol];x.c=x.c%NCOL+1;saveSpl();render();return}
+  if(d.splup!==undefined){const j=+d.splup;if(j>0){[SPL[j-1],SPL[j]]=[SPL[j],SPL[j-1]];S.confirmSpl=-1;saveSpl();render()}return}
+  if(d.spldel!==undefined){S.confirmSpl=+d.spldel;render();return}
+  if(d.spldelno){S.confirmSpl=-1;render();return}
+  if(d.spldelyes!==undefined){if(SPL.length<2)return;const x=SPL.splice(+d.spldelyes,1)[0];delete MAT[x.name];S.confirmSpl=-1;if(S.filter===x.name)S.filter="Alle";saveSpl();saveMat();render();toast(x.name+" entfernt");return}
+  if(d.matp){S.matP=d.matp;render();return}
+  if(d.matadd){matAdd(d.matadd);return}
+  if(d.matstd!==undefined){const M=matOf(S.matP);M.std=M.stingel[+d.matstd];saveMat();render();return}
+  if(d.matdel){const [kind,i]=d.matdel.split(":");const M=matOf(S.matP);const v=M[kind].splice(+i,1)[0];if(kind==="stingel"&&M.std===v)M.std=M.stingel[0]||"";saveMat();render();toast("„"+v+"“ entfernt");return}
+  if(d.matup){const [kind,i]=d.matup.split(":");const a=matOf(S.matP)[kind],j=+i;if(j>0){[a[j-1],a[j]]=[a[j],a[j-1]];saveMat();render()}return}
+  if(d.matcopy){const src=matOf(d.matcopy),M=matOf(S.matP);src.stingel.forEach(v=>{if(!M.stingel.includes(v))M.stingel.push(v)});src.platten.forEach(v=>{if(!M.platten.includes(v))M.platten.push(v)});if(!M.std)M.std=src.std;saveMat();render();toast("Liste von "+d.matcopy+" übernommen");return}
+  if(d.art){S.cur.spiele[S.g].art=d.art;queueSave();render();return}
+  if(d.stingelreset){const kh=S.cur.spiele[S.g].kehren[S.k];kh.stingelOwn=false;kh.stingel="";queueSave();render();return}
+  if(d.set){const kh=S.cur.spiele[S.g].kehren[S.k];kh[d.set]=kh[d.set]===d.val?"":d.val;if(d.set==="massLage"&&kh.massLage==="NK")kh.massRing="";queueSave();render();return}
+  if(b.id==="prevK"){step(-1);return}
+  if(b.id==="nextK"){step(1);return}
+  if(b.id==="cfgReset"){S.confirmReset=true;render();return}
+  if(b.id==="cfgResetNo"){S.confirmReset=false;render();return}
+  if(b.id==="cfgResetYes"){CFG=mergeCfg(null);S.confirmReset=false;saveCfg();render();toast("Standardwerte wiederhergestellt");return}
+  if(b.id==="xlsAll"){const list=filtered();if(!list.length){toast("Keine Trainings zum Exportieren.");return}const data=buildXlsx(list);if(data)offer("Stocksport_Training_"+(S.filter==="Alle"?"Alle":S.filter)+"_"+today()+".xlsx",data);return}
+  if(b.id==="bkExport"){S.importReport="";doExport();return}
+  if(b.id==="bkImport"){const f=document.getElementById("bkFile");if(f){f.value="";f.click()}return}
+  if(b.id==="pdfBlank"){const data=buildPdf(null);if(data)offer("Stocksport_Trainingsprotokoll_leer.pdf",data);return}
+  if(b.id==="pdfCur"){const data=buildPdf(S.cur);if(data)offer("Training_"+S.cur.spieler+"_"+S.cur.datum+".pdf",data);return}
+});
+app.addEventListener("input",e=>{
+  const el=e.target;
+  if(el.dataset&&el.dataset.cfg){setCfgPath(el.dataset.cfg,el.value===""?0:num(el.value));saveCfg();refreshCfgNotes();return}
+  if(!S.cur)return;const kh=S.cur.spiele[S.g].kehren[S.k];
+  const map={"f-stingel":["k","stingel"],"f-schussplatte":["k","schussplatte"],"f-massplatte":["k","massplatte"],"f-temp":["t","temperatur"],"f-datum":["t","datum"],"f-zeit":["t","zeit"]};
+  const m=map[el.id];if(!m)return;(m[0]==="k"?kh:S.cur)[m[1]]=el.value;
+  if(el.id==="f-stingel"&&S.g>0){kh.stingelOwn=true}
+  queueSave();
+});
+
+
+window.addEventListener("pagehide",()=>{
+  if(S.cur){S.cur.updatedAt=Date.now();const i=S.trainings.findIndex(t=>t.id===S.cur.id);if(i<0)S.trainings.push(S.cur);else S.trainings[i]=S.cur;lsSave()}
+});
+
+/* ---------- Start ---------- */
+S.trainings=lsLoad().map(normalize);S.loaded=true;render();
+(async()=>{
+  try{
+    const cl=window.claude;if(!cl||!cl.use)return;
+    const [db,user,dl]=await Promise.all([cl.use("db"),cl.use("user"),cl.use("downloads")]);
+    S.dl=dl;
+    if(db&&user){
+      const me=await user.me().catch(()=>null);const uid=me&&me.id?me.id:await user.id().catch(()=>null);
+      if(uid){S.db=db;S.uid=uid;
+        const snap=await coll().get();
+        const wDoc=snap.docs.find(d=>d.id==="_wertung");
+        if(wDoc){const wd=wDoc.data()||{};CFG=mergeCfg(wd);if(wd._ts){META.cfgTs=wd._ts;saveMeta()}try{localStorage.setItem(CFG_KEY,JSON.stringify(CFG))}catch(e){}}
+        else{try{if(localStorage.getItem(CFG_KEY))await coll().doc("_wertung").set(JSON.parse(JSON.stringify(CFG)))}catch(e){}}
+        const sDoc=snap.docs.find(d=>d.id==="_spieler");
+        if(sDoc){const sd=sDoc.data()||{};SPL=cleanSpl(sd.list);if(sd._ts){META.splTs=sd._ts;saveMeta()}try{localStorage.setItem(SPL_KEY,JSON.stringify(SPL))}catch(e){}}
+        else{try{if(localStorage.getItem(SPL_KEY))await coll().doc("_spieler").set({list:JSON.parse(JSON.stringify(SPL)),_ts:META.splTs})}catch(e){}}
+        const mDoc=snap.docs.find(d=>d.id==="_material");
+        if(mDoc){const md=mDoc.data()||{};MAT=mergeMat(md);if(md._ts){META.matTs=md._ts;saveMeta()}try{localStorage.setItem(MAT_KEY,JSON.stringify(MAT))}catch(e){}}
+        else{try{if(localStorage.getItem(MAT_KEY))await coll().doc("_material").set(JSON.parse(JSON.stringify(MAT)))}catch(e){}}
+        const remote=snap.docs.filter(d=>d.id!=="_wertung"&&d.id!=="_material"&&d.id!=="_spieler").map(d=>normalize(d.data()||{}));
+        const byId=new Map(remote.map(t=>[t.id,t]));
+        for(const t of S.trainings){const r=byId.get(t.id);if(!r||(t.updatedAt||0)>(r.updatedAt||0)){byId.set(t.id,t);try{await coll().doc(t.id).set(JSON.parse(JSON.stringify(t)))}catch(e){}}}
+        S.trainings=[...byId.values()];lsSave();
+        if(S.cur){const r=byId.get(S.cur.id);if(r)S.cur=r}
+      }
+    }
+  }catch(e){}
+  if(S.view!=="edit")render();
+})();
+})();
+</script>
+
+</body>
+</html>
